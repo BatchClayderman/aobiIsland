@@ -1,32 +1,11 @@
-# aobiIsland
-
-This is a repository of **unofficial** guidelines for Aobi Island based on personal views. Any Pull Request (PR) is welcome! 
-
-The guidelines will be divided into the following folders for better presentation. 
-
-- [Introduction](Introduction/README.md)
-- [Header](Header/README.md)
-- [Tokens](Tokens/README.md)
-- [Permanence](Permanence/README.md)
-- [Temporariness](Temporariness/README.md)
-- [Book](Book/README.md)
-- [Maps](Maps/README.md)
-- [Chats](Chats/README.md)
-
----
-
 # 奥比岛手游
 
-本存储库是一个有关奥比岛手游的**非官方**指南，仅代表个人观点。欢迎 Pull Request（PR）！
+本存储库提供有关奥比岛手游的游戏指南。
 
-为了更好地展示，本指引将切分为以下几个文件夹进行。
+请注意，此处的指南为**非官方**指南，仅代表个人观点。本存储库目前仍处于摸索阶段。
 
-- [引言](Introduction/README.md)
-- [头像](Header/README.md)
-- [代币区](Tokens/README.md)
-- [常驻图标](Permanence/README.md)
-- [限时图标](Temporariness/README.md)
-- [书本](Book/README.md)
-- [地图](Maps/README.md)
-- [聊天](Chats/README.md)
+为尽可能避免重复或遗漏，本存储库将以[任务清单](./todo/README.md)为线索展开指南。
 
+为了向图形用户界面游戏开发（Graphic User Interface Game Development）和通用自动游戏（General Game Playing）等计算机科学领域的读者朋友们提供可能的支持，我们在部分指南文件中提供了计算机实现原理和相应的代码。
+
+本存储库采用 GNU 通用公共许可协议 V3（GPLv3）发布，欢迎提交拉取请求（Pull Request，简称 PR）或议题（Issue）。
