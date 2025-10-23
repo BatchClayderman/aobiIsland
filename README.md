@@ -1,4 +1,4 @@
-# 奥比岛手游
+# Obi Island: Dreamland
 
 This repository stores the unofficial guidelines for the ``Obi Island: Dreamland`` mobile game. 
 
@@ -11,6 +11,8 @@ To support readers in computer science fields such as Graphic User Interface (GU
 This repository is released under the GNU General Public License Version 3 (GPLv3). Pull requests (PRs) and issues are welcome. 
 
 ---
+
+# 奥比岛：梦幻国度
 
 这是一个有关《奥比岛：梦幻国度》手游的指引。
 
