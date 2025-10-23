@@ -1,6 +1,18 @@
 # 奥比岛手游
 
-本存储库提供有关奥比岛手游的游戏指南。
+This repository stores the unofficial guidelines for the ``Obi Island: Dreamland`` mobile game. 
+
+Please note that the guidelines here are **unofficial** and represent only some personal opinions. This repository is still in its developmental stages. 
+
+To minimize duplication and omissions, this repository will organize the guidelines using a [todo list](./todo/README.md). 
+
+To support readers in computer science fields such as Graphic User Interface (GUI) game development and General Game Playing, we provide computer implementation principles and corresponding code in some of the guideline files. 
+
+This repository is released under the GNU General Public License Version 3 (GPLv3). Pull requests (PRs) and issues are welcome. 
+
+---
+
+这是一个有关《奥比岛：梦幻国度》手游的指引。
 
 请注意，此处的指南为**非官方**指南，仅代表个人观点。本存储库目前仍处于摸索阶段。
 
