@@ -66,18 +66,20 @@ class Solver:
 							return (a, b, c, d)
 		return None
 	@staticmethod
-	def solve(problem:Problem) -> tuple:
-		if isinstance(problem, Problem) and Status.Generated <= problem.getStatus() <= Status.Solving:
+	def solve(problem:Problem, isPrint:bool = False) -> tuple:
+		if isinstance(problem, Problem) and isinstance(isPrint, bool) and Status.Generated <= problem.getStatus() <= Status.Solving:
 			# Gathering #
 			submissions, attemptCount, answers, writingFlags, symbolTypeCount = tuple(range(4)), 0, [[] for idx in range(4)], [True] * 4, 0
 			isSubmitted, status, results = problem.submit(submissions)
 			if isSubmitted:
 				attemptCount += 1
 				if Status.Successful == status:
-					print("{0}: {1} -> {2} -> Successful".format(attemptCount, submissions, results))
+					if isPrint:
+						print("{0}: {1} -> {2} -> Successful".format(attemptCount, submissions, results))
 					return (True, attemptCount, submissions)
 				elif Status.Failed == status:
-					print("{0}: {1} -> {2} -> Failed".format(attemptCount, submissions, results))
+					if isPrint:
+						print("{0}: {1} -> {2} -> Failed".format(attemptCount, submissions, results))
 					return (True, attemptCount, None)
 				else:
 					for idx in range(4):
@@ -96,16 +98,19 @@ class Solver:
 			else:
 				return (False, attemptCount, None)
 			if symbolTypeCount < 4:
-				print("{0}: {1} -> {2} -> {3}".format(attemptCount, submissions, results, answers))
+				if isPrint:
+					print("{0}: {1} -> {2} -> {3}".format(attemptCount, submissions, results, answers))
 				submissions = tuple(range(4, 8))
 				isSubmitted, status, results = problem.submit(submissions)
 				if isSubmitted:
 					attemptCount += 1
 					if Status.Successful == status:
-						print("{0}: {1} -> {2} -> Successful".format(attemptCount, submissions, results))
+						if isPrint:
+							print("{0}: {1} -> {2} -> Successful".format(attemptCount, submissions, results))
 						return (True, attemptCount, submissions)
 					elif Status.Failed == status:
-						print("{0}: {1} -> {2} -> Failed".format(attemptCount, submissions, results))
+						if isPrint:
+							print("{0}: {1} -> {2} -> Failed".format(attemptCount, submissions, results))
 						return (True, attemptCount, None)
 					else:
 						for idx in range(4):
@@ -121,10 +126,11 @@ class Solver:
 								for secondaryIdx in range(4):
 									if secondaryIdx != idx and writingFlags[secondaryIdx]:
 										answers[secondaryIdx].append(submissions[idx])
-						print("{0}: {1} -> {2} -> {3} -> {4}".format(attemptCount, submissions, results, answers, symbolTypeCount))
+						if isPrint:
+							print("{0}: {1} -> {2} -> {3} -> {4}".format(attemptCount, submissions, results, answers, symbolTypeCount))
 				else:
 					return (False, attemptCount, None)
-			else:
+			elif isPrint:
 				print("{0}: {1} -> {2} -> {3} -> {4}".format(attemptCount, submissions, results, answers, symbolTypeCount))
 			del writingFlags
 			
@@ -135,10 +141,12 @@ class Solver:
 				if isSubmitted:
 					attemptCount += 1
 					if Status.Successful == status:
-						print("{0}: {1} -> {2} -> Successful".format(attemptCount, submissions, results))
+						if isPrint:
+							print("{0}: {1} -> {2} -> Successful".format(attemptCount, submissions, results))
 						return (True, attemptCount, submissions)
 					elif Status.Failed == status:
-						print("{0}: {1} -> {2} -> Failed".format(attemptCount, submissions, results))
+						if isPrint:
+							print("{0}: {1} -> {2} -> Failed".format(attemptCount, submissions, results))
 						return (True, attemptCount, None)
 					else:
 						for idx in range(4):
@@ -151,7 +159,8 @@ class Solver:
 									return (False, attemptCount, None)
 							else:
 								return (False, attemptCount, None)
-						print("{0}: {1} -> {2} -> {3}".format(attemptCount, submissions, results, answers))
+						if isPrint:
+							print("{0}: {1} -> {2} -> {3}".format(attemptCount, submissions, results, answers))
 				else:
 					return (False, attemptCount, None)
 			return (False, attemptCount, None)
@@ -170,7 +179,7 @@ class Helper:
 
 
 def main() -> int:
-	argc, groupCount, problem, successCount, failureCount, invalidityCount, totalAttemptCount, totalTime = len(argv), 0, Problem(), 0, 0, 0, 0, 0
+	argc, groupCount, problem, isPrint, successCount, failureCount, invalidityCount, totalAttemptCount, totalTime = len(argv), 0, Problem(), False, 0, 0, 0, 0, 0
 	if 2 == argc:
 		if argv[1].lower() in ("inf", "+inf"):
 			groupCount = 4096
@@ -183,21 +192,27 @@ def main() -> int:
 		if groupCount <= 4095:
 			print("The group count has been set to {0}. ".format(groupCount))
 			for _ in range(groupCount):
-				print("Successfully generated. " if problem.generate() else "Failed to generate. ")
+				if isPrint:
+					print("Successfully generated. " if problem.generate() else "Failed to generate. ")
+				else:
+					problem.generate()
 				startTime = perf_counter()
-				isValid, attemptCount, answers = Solver.solve(problem)
+				isValid, attemptCount, answers = Solver.solve(problem, isPrint = isPrint)
 				endTime = perf_counter()
 				if isValid:
 					if isinstance(answers, tuple):
-						print("The answer is {0}. ".format(" + ".join(str(answer) for answer in answers)))
+						if isPrint:
+							print("The answer is {0}. ".format(" + ".join(str(answer) for answer in answers)))
 						successCount += 1
 						totalAttemptCount += attemptCount
 						totalTime += endTime - startTime
 					else:
-						print("Failed to solve. ")
+						if isPrint:
+							print("Failed to solve. ")
 						failureCount += 1
 				else:
-					print("The problem is invalid. ")
+					if isPrint:
+						print("The problem is invalid. ")
 					invalidCount += 1
 			print(															\
 				"The program has conducted {0} random {1}, where {2} succeeded, {3} failed, and {4} {5} invalid. ".format(	\
@@ -211,21 +226,27 @@ def main() -> int:
 				for b in range(8):
 					for c in range(8):
 						for d in range(8):
-							print(("Successfully" if problem.set((a, b, c, d)) else "Failed to") + " set ({0}, {1}, {2}, {3}). ".format(a, b, c, d))
+							if isPrint:
+								print(("Successfully" if problem.set((a, b, c, d)) else "Failed to") + " set ({0}, {1}, {2}, {3}). ".format(a, b, c, d))
+							else:
+								problem.set((a, b, c, d))
 							startTime = perf_counter()
-							isValid, attemptCount, answers = Solver.solve(problem)
+							isValid, attemptCount, answers = Solver.solve(problem, isPrint = isPrint)
 							endTime = perf_counter()
 							if isValid:
 								if isinstance(answers, tuple):
-									print("The answer is {0}. ".format(" + ".join(str(answer) for answer in answers)))
+									if isPrint:
+										print("The answer is {0}. ".format(" + ".join(str(answer) for answer in answers)))
 									successCount += 1
 									totalAttemptCount += attemptCount
 									totalTime += endTime - startTime
 								else:
-									print("Failed to solve. ")
+									if isPrint:
+										print("Failed to solve. ")
 									failureCount += 1
 							else:
-								print("The problem is invalid. ")
+								if isPrint:
+									print("The problem is invalid. ")
 								invalidityCount += 1
 			print(															\
 				"The program has traversed 4096 groups, where {0} succeeded, {1} failed, and {2} {3} invalid. ".format(		\
@@ -245,21 +266,27 @@ def main() -> int:
 					count += 1
 		if groupCount and len(groups) == groupCount:
 			for group in groups:
-				print(("Successfully" if problem.set(group) else "Failed to") + " set {0}. ".format(group))
+				if isPrint:
+					print(("Successfully" if problem.set(group) else "Failed to") + " set {0}. ".format(group))
+				else:
+					problem.set(group)
 				startTime = perf_counter()
-				isValid, attemptCount, answers = Solver.solve(problem)
+				isValid, attemptCount, answers = Solver.solve(problem, isPrint = isPrint)
 				endTime = perf_counter()
 				if isValid:
 					if isinstance(answers, tuple):
-						print("The answer is {0}. ".format(" + ".join(str(answer) for answer in answers)))
+						if isPrint:
+							print("The answer is {0}. ".format(" + ".join(str(answer) for answer in answers)))
 						successCount += 1
 						totalAttemptCount += attemptCount
 						totalTime = endTime - startTime
 					else:
-						print("Failed to solve. ")
+						if isPrint:
+							print("Failed to solve. ")
 						failureCount += 1
 				else:
-					print("The problem is invalid. ")
+					if isPrint:
+						print("The problem is invalid. ")
 					invalidityCount += 1
 			print(															\
 				"The program has conducted {0} specified {1}, where {2} succeeded, {3} failed, and {4} {5} invalid. ".format(	\
